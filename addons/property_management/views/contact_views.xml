@@ -1,0 +1,47 @@
+<odoo>
+
+    <record id="view_partner_form_building" model="ir.ui.view">
+
+        <field name="name">res.partner.form.building</field>
+
+        <field name="model">res.partner</field>
+
+        <field name="inherit_id" ref="base.view_partner_form"/>
+
+        <field name="arch" type="xml">
+
+            <!-- building under email -->
+            <xpath expr="//field[@name='website']" position="before">
+
+                <field name="building_id"
+                       placeholder="e.g. Choose building"
+                       class="o_field_widget"/>
+
+            </xpath>
+
+            <!-- phone placeholder -->
+            <xpath expr="//field[@name='phone']" position="attributes">
+
+                <attribute name="placeholder">e.g. 012345678</attribute>
+
+            </xpath>
+
+            <!-- mobile placeholder -->
+            <xpath expr="//field[@name='mobile']" position="attributes">
+
+                <attribute name="placeholder">e.g. 017612345678</attribute>
+
+            </xpath>
+
+            <!-- email placeholder -->
+            <xpath expr="//field[@name='email']" position="attributes">
+
+                <attribute name="placeholder">e.g. name@email.com</attribute>
+
+            </xpath>
+
+        </field>
+
+    </record>
+
+</odoo>

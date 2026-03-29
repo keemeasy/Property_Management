@@ -2,58 +2,156 @@
 
     <!-- UNIT LIST VIEW -->
     <record id="view_unit_tree" model="ir.ui.view">
+
         <field name="name">property.unit.tree</field>
+
         <field name="model">property.unit</field>
+
         <field name="arch" type="xml">
 
             <tree>
-                <field name="name"/>
-                <field name="property_id"/>
-                <field name="tenant_id"/>
-                <field name="rent"/>
+
+                <!-- apartment name -->
+                <field name="name" string="Einheit"/>
+
+                <!-- building -->
+                <field name="property_id" string="Gebäude"/>
+
+                <!-- tenant from active lease -->
+                <field name="current_tenant_id"
+                       string="Mieter"/>
+
+                <!-- Frei / Vermietet -->
+                <field name="occupancy_status"
+                       string="Belegung"/>
+
+                <!-- monthly rent -->
+                <field name="current_rent"
+                       string="Warmmiete"/>
+
             </tree>
 
         </field>
+
     </record>
+
 
 
     <!-- UNIT FORM VIEW -->
+
     <record id="view_unit_form" model="ir.ui.view">
+
         <field name="name">property.unit.form</field>
+
         <field name="model">property.unit</field>
+
         <field name="arch" type="xml">
 
             <form>
+
                 <sheet>
 
+
                     <group>
-                        <field name="name"/>
-                        <field name="property_id"/>
-                        <field name="tenant_id"/>
-                        <field name="size"/>
-                        <field name="rent"/>
+
+                        <!-- apartment name -->
+                        <field name="name" string="Einheit"/>
+
+                        <!-- building -->
+                        <field name="property_id" string="Gebäude"/>
+
+
+                        <!-- automatic tenant from lease -->
+                        <field name="current_tenant_id"
+                               string="Aktueller Mieter"
+                               readonly="1"/>
+
+
+                        <!-- apartment size -->
+                        <field name="size"
+                               string="Fläche (m²)"/>
+
+
+                        <!-- Warmmiete from active lease -->
+                        <field name="current_rent"
+                               string="Warmmiete"
+                               readonly="1"/>
+
+
+                        <!-- Frei / Vermietet indicator -->
+                        <field name="occupancy_status"
+                               string="Belegungsstatus"
+                               readonly="1"/>
+
                     </group>
 
+
+
+                    <!-- LEASE HISTORY -->
+
+                    <group string="Mietverträge">
+
+                        <field name="lease_ids">
+
+                            <tree>
+
+                                <field name="tenant_id"
+                                       string="Mieter"/>
+
+                                <field name="start_date"
+                                       string="Mietbeginn"/>
+
+                                <field name="end_date"
+                                       string="Mietende"/>
+
+                                <field name="total_rent"
+                                       string="Warmmiete"/>
+
+                                <field name="state"
+                                       string="Status"/>
+
+                            </tree>
+
+                        </field>
+
+                    </group>
+
+
                 </sheet>
+
             </form>
 
         </field>
+
     </record>
+
 
 
     <!-- ACTION -->
+
     <record id="action_units" model="ir.actions.act_window">
+
         <field name="name">Units</field>
+
         <field name="res_model">property.unit</field>
+
         <field name="view_mode">tree,form</field>
+
     </record>
 
 
+
     <!-- MENU -->
-    <menuitem id="menu_units"
-              name="Units"
-              parent="menu_property_root"
-              action="action_units"
-              sequence="2"/>
+
+    <menuitem
+        id="menu_units"
+
+        name="Einheiten"
+
+        parent="menu_property_root"
+
+        action="action_units"
+
+        sequence="2"/>
 
 </odoo>

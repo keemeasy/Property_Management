@@ -18,7 +18,7 @@
         'views/unit_views.xml',
 
         'views/contact_views.xml',
-
+        'views/lease_views.xml',
     ],
 
     'installable': True,

@@ -12,11 +12,11 @@ class PropertyLease(models.Model):
         required=True
     )
 
-    tenant_id = fields.Many2one(
-        'res.partner',
-        string="Mieter",
-        required=True
-    )
+    tenant_ids = fields.Many2many(
+    'res.partner',
+    string="Mieter",
+    required=True
+)
 
     unit_id = fields.Many2one(
         'property.unit',

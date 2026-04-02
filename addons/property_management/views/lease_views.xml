@@ -15,7 +15,9 @@
                     <group string="Vertrag">
 
                         <field name="name"/>
-                        <field name="tenant_id"/>
+
+                        <field name="tenant_ids"
+                               widget="many2many_tags"/>
 
                         <field name="property_id" readonly="1"/>
                         <field name="unit_id"/>
@@ -69,6 +71,7 @@
     <record id="view_lease_tree" model="ir.ui.view">
 
         <field name="name">property.lease.tree</field>
+
         <field name="model">property.lease</field>
 
         <field name="arch" type="xml">
@@ -76,9 +79,13 @@
             <tree>
 
                 <field name="name"/>
-                <field name="tenant_id"/>
+
+                <!-- ONLY CHANGE HERE -->
+                <field name="tenant_ids"
+                       widget="many2many_tags"/>
 
                 <field name="property_id"/>
+
                 <field name="unit_id"/>
 
                 <field name="start_date"/>

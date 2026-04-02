@@ -4,13 +4,16 @@
     <record id="view_property_form" model="ir.ui.view">
         <field name="name">property.property.form</field>
         <field name="model">property.property</field>
+
         <field name="arch" type="xml">
 
             <form>
+
+                <!-- NORMAL FORM AREA -->
                 <sheet>
 
-                    <!-- BASIC BUILDING DATA -->
-                    <group>
+                    <!-- BUILDING BASIC INFO -->
+                    <group col="2">
 
                         <field name="name" string="Gebäude"/>
 
@@ -20,7 +23,7 @@
 
 
                     <!-- ADDRESS -->
-                    <group>
+                    <group col="4">
 
                         <field name="street" string="Straße"/>
 
@@ -32,40 +35,41 @@
 
                     </group>
 
-
-                    <!-- EINHEITEN TAB -->
-                    <notebook>
-
-                        <page string="Einheiten">
-
-                            <field name="unit_ids">
-
-                                <tree editable="bottom">
-
-                                    <!-- apartment name -->
-                                    <field name="name" string="Einheit"/>
-
-                                    <!-- automatic tenant from lease -->
-                                    <field name="current_tenant_id"
-                                           string="Mieter"/>
-
-                                    <!-- Frei / Vermietet -->
-                                    <field name="occupancy_status"
-                                           string="Belegung"/>
-
-                                    <!-- Warmmiete from lease -->
-                                    <field name="current_rent"
-                                           string="Warmmiete"/>
-
-                                </tree>
-
-                            </field>
-
-                        </page>
-
-                    </notebook>
-
                 </sheet>
+
+
+                <!-- FULL WIDTH SECTION -->
+                <div class="oe_title"/>
+
+                <group string="Einheiten" col="1">
+
+                    <field name="unit_ids" nolabel="1">
+
+                        <tree editable="bottom">
+
+                            <field name="name" string="Einheit"/>
+
+                            <field name="size" string="m²"/>
+
+                            <field name="active_tenant_ids"
+                                   widget="many2many_tags"
+                                   string="Mieter"
+                                   readonly="1"/>
+
+                            <field name="occupancy_status"
+                                   string="Status"
+                                   readonly="1"/>
+
+                            <field name="current_rent"
+                                   string="Warmmiete"
+                                   readonly="1"/>
+
+                        </tree>
+
+                    </field>
+
+                </group>
+
             </form>
 
         </field>
@@ -74,39 +78,33 @@
 
 
     <!-- PROPERTY LIST VIEW -->
-<record id="view_property_tree" model="ir.ui.view">
+    <record id="view_property_tree" model="ir.ui.view">
 
-    <field name="name">property.property.tree</field>
+        <field name="name">property.property.tree</field>
 
-    <field name="model">property.property</field>
+        <field name="model">property.property</field>
 
-    <field name="arch" type="xml">
+        <field name="arch" type="xml">
 
-        <tree>
+            <tree>
 
-            <!-- building name -->
-            <field name="name" string="Gebäude"/>
+                <field name="name" string="Gebäude"/>
 
-            <!-- city -->
-            <field name="city" string="Stadt"/>
+                <field name="city" string="Stadt"/>
 
-            <!-- owner -->
-            <field name="owner_id" string="Eigentümer"/>
+                <field name="owner_id" string="Eigentümer"/>
 
-            <!-- total number of units -->
-            <field name="unit_count" string="Einheiten"/>
+                <field name="unit_count" string="Einheiten"/>
 
-            <!-- rented units -->
-            <field name="rented_count" string="Vermietet"/>
+                <field name="rented_count" string="Vermietet"/>
 
-            <!-- NEW: vacant units -->
-            <field name="vacant_count" string="Leerstand"/>
+                <field name="vacant_count" string="Leerstand"/>
 
-        </tree>
+            </tree>
 
-    </field>
+        </field>
 
-</record>
+    </record>
 
 
 

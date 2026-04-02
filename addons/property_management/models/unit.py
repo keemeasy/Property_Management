@@ -24,27 +24,38 @@ class PropertyUnit(models.Model):
     )
 
 
-    # OLD RENT FIELD (manual)
-    # kept for compatibility for now
-    # later we may remove it
+    #  APARTMENT DETAILS
 
-    rent = fields.Float(
-        string="Monthly Rent"
+    number = fields.Char(
+        string="Wohnungsnummer"
     )
 
+    floor = fields.Integer(
+        string="Etage"
+    )
 
-    # OLD TENANT FIELD (manual)
-    # still kept so nothing breaks
-    # replaced by automatic tenant below
+    rooms = fields.Float(
+        string="Zimmer"
+    )
 
-    tenant_id = fields.Many2one(
-        'res.partner',
-        string="Tenant"
+    bathrooms = fields.Integer(
+        string="Badezimmer"
+    )
+
+    has_cellar = fields.Boolean(
+        string="Keller"
+    )
+
+    has_balcony = fields.Boolean(
+        string="Balkon"
+    )
+
+    parking = fields.Boolean(
+        string="Stellplatz"
     )
 
 
     # RELATION TO LEASES
-    # one unit can have multiple leases over time
 
     lease_ids = fields.One2many(
         'property.lease',
@@ -53,8 +64,7 @@ class PropertyUnit(models.Model):
     )
 
 
-    # CURRENT TENANT (automatic)
-    # takes tenant from ACTIVE lease
+    # CURRENT TENANT (first tenant from active lease)
 
     current_tenant_id = fields.Many2one(
         'res.partner',
@@ -64,21 +74,40 @@ class PropertyUnit(models.Model):
     )
 
 
-    # CURRENT RENT (automatic Warmmiete)
-    # takes Warmmiete from ACTIVE lease
+    # ALL ACTIVE TENANTS (for tags)
+
+    active_tenant_ids = fields.Many2many(
+        'res.partner',
+        string="Aktive Mieter",
+        compute="_compute_active_tenant_ids"
+    )
+
+
+    # CURRENT RENT
 
     current_rent = fields.Float(
-        string="Current Rent",
+        string="Warmmiete",
         compute="_compute_current_rent",
         store=True
     )
 
 
-    # COMPUTE CURRENT TENANT
-    # finds lease where state = active
-    # extracts tenant from that lease
+    # OCCUPANCY STATUS
 
-    @api.depends('lease_ids.state', 'lease_ids.tenant_id')
+    occupancy_status = fields.Selection(
+        [
+            ('vacant', 'Frei'),
+            ('rented', 'Vermietet')
+        ],
+        string="Belegungsstatus",
+        compute="_compute_occupancy_status",
+        store=True
+    )
+
+
+    # FIRST TENANT
+
+    @api.depends('lease_ids.state', 'lease_ids.tenant_ids')
     def _compute_current_tenant(self):
 
         for unit in self:
@@ -88,14 +117,32 @@ class PropertyUnit(models.Model):
             )
 
             unit.current_tenant_id = (
-                active_lease[:1].tenant_id
+                active_lease[:1].tenant_ids[:1]
                 if active_lease else False
             )
 
 
-    # COMPUTE CURRENT RENT (Warmmiete)
-    # finds active lease
-    # extracts total_rent from lease
+    # ALL TENANTS (WG support)
+
+    @api.depends('lease_ids.state', 'lease_ids.tenant_ids')
+    def _compute_active_tenant_ids(self):
+
+        for unit in self:
+
+            active_lease = unit.lease_ids.filtered(
+                lambda lease: lease.state == 'active'
+            )
+
+            if active_lease:
+
+                unit.active_tenant_ids = active_lease[0].tenant_ids
+
+            else:
+
+                unit.active_tenant_ids = False
+
+
+    # CURRENT RENT
 
     @api.depends('lease_ids.state', 'lease_ids.total_rent')
     def _compute_current_rent(self):
@@ -112,31 +159,9 @@ class PropertyUnit(models.Model):
             )
 
 
-    # BELEGUNGSSTATUS (automatic)
-    # shows if the unit is currently rented or vacant
-    # based on ACTIVE lease
-
-    occupancy_status = fields.Selection(
-
-        [
-            ('vacant', 'Frei'),
-            ('rented', 'Vermietet')
-        ],
-
-        string="Belegungsstatus",
-
-        compute="_compute_occupancy_status",
-
-        store=True
-    )
-
-
-    # COMPUTE BELEGUNGSSTATUS
-    # if active lease exists → Vermietet
-    # otherwise → Frei
+    # OCCUPANCY STATUS
 
     @api.depends('lease_ids.state')
-
     def _compute_occupancy_status(self):
 
         for unit in self:

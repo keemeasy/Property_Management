@@ -13,10 +13,10 @@ class PropertyLease(models.Model):
     )
 
     tenant_ids = fields.Many2many(
-    'res.partner',
-    string="Mieter",
-    required=True
-)
+        'res.partner',
+        string="Mieter",
+        required=True
+    )
 
     unit_id = fields.Many2one(
         'property.unit',
@@ -52,7 +52,9 @@ class PropertyLease(models.Model):
     )
 
 
-    cold_rent = fields.Float(string="Kaltmiete")
+    cold_rent = fields.Float(
+        string="Kaltmiete"
+    )
 
     additional_cost = fields.Float(
         string="Nebenkosten"

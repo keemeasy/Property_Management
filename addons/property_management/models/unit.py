@@ -52,10 +52,7 @@ class PropertyUnit(models.Model):
 
     parking = fields.Boolean(
         string="Stellplatz"
-    )
-
-
-    # RELATION TO LEASES
+    )   # RELATION TO LEASES
 
     lease_ids = fields.One2many(
         'property.lease',
@@ -98,8 +95,7 @@ class PropertyUnit(models.Model):
         [
             ('vacant', 'Frei'),
             ('rented', 'Vermietet')
-        ],
-        string="Belegungsstatus",
+        ],  string="Belegungsstatus",
         compute="_compute_occupancy_status",
         store=True
     )
@@ -148,7 +144,6 @@ class PropertyUnit(models.Model):
     def _compute_current_rent(self):
 
         for unit in self:
-
             active_lease = unit.lease_ids.filtered(
                 lambda lease: lease.state == 'active'
             )
@@ -174,4 +169,4 @@ class PropertyUnit(models.Model):
                 'rented'
                 if active_lease
                 else 'vacant'
-            )
+            ) 

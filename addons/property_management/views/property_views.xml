@@ -9,66 +9,59 @@
 
             <form>
 
-                <!-- NORMAL FORM AREA -->
-                <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" placeholder="Gebäude"/>
+                    </h1>
+                </div>
 
-                    <!-- BUILDING BASIC INFO -->
-                    <group col="2">
+                <group col="4">
 
-                        <field name="name" string="Gebäude"/>
+                    <field name="owner_id" string="Eigentümer"/>
 
-                        <field name="owner_id" string="Eigentümer"/>
+                    <field name="street" string="Straße"/>
 
-                    </group>
+                    <field name="city" string="Stadt"/>
 
+                    <field name="zip" string="PLZ"/>
 
-                    <!-- ADDRESS -->
-                    <group col="4">
-
-                        <field name="street" string="Straße"/>
-
-                        <field name="city" string="Stadt"/>
-
-                        <field name="zip" string="PLZ"/>
-
-                        <field name="country" string="Land"/>
-
-                    </group>
-
-                </sheet>
-
-
-                <!-- FULL WIDTH SECTION -->
-                <div class="oe_title"/>
-
-                <group string="Einheiten" col="1">
-
-                    <field name="unit_ids" nolabel="1">
-
-                        <tree editable="bottom">
-
-                            <field name="name" string="Einheit"/>
-
-                            <field name="size" string="m²"/>
-
-                            <field name="active_tenant_ids"
-                                   widget="many2many_tags"
-                                   string="Mieter"
-                                   readonly="1"/>
-
-                            <field name="occupancy_status"
-                                   string="Status"
-                                   readonly="1"/>
-
-                            <field name="current_rent"
-                                   string="Warmmiete"
-                                   readonly="1"/>
-
-                        </tree>
-
-                    </field>
+                    <field name="country" string="Land"/>
 
                 </group>
+
+
+                <notebook>
+
+                    <page string="Einheiten">
+
+                        <field name="unit_ids">
+
+                            <tree editable="bottom">
+
+                                <field name="name" string="Einheit"/>
+
+                                <field name="size" string="m²"/>
+
+                                <field name="active_tenant_ids"
+                                       widget="many2many_tags"
+                                       string="Mieter"
+                                       readonly="1"/>
+
+                                <field name="occupancy_status"
+                                       string="Status"
+                                       readonly="1"/>
+
+                                <field name="current_rent"
+                                       string="Warmmiete"
+                                       readonly="1"/>
+
+                            </tree>
+
+                        </field>
+
+                    </page>
+
+                </notebook>
 
             </form>
 

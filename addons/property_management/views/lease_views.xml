@@ -1,6 +1,5 @@
 <odoo>
 
-
     <record id="view_lease_form" model="ir.ui.view">
 
         <field name="name">property.lease.form</field>
@@ -10,55 +9,47 @@
 
             <form>
 
-                <sheet>
+                <group string="Vertrag" col="4">
 
-                    <group string="Vertrag">
+                    <field name="name"/>
 
-                        <field name="name"/>
+                    <field name="tenant_ids"
+                           widget="many2many_tags"/>
 
-                        <field name="tenant_ids"
-                               widget="many2many_tags"/>
+                    <field name="property_id" readonly="1"/>
+                    <field name="unit_id"/>
 
-                        <field name="property_id" readonly="1"/>
-                        <field name="unit_id"/>
+                    <field name="contract_type"/>
 
-                        <field name="contract_type"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
 
-                        <field name="start_date"/>
-                        <field name="end_date"/>
+                    <field name="state"/>
 
-                    </group>
-
-
-                    <group string="Miete">
-
-                        <field name="cold_rent"/>
-                        <field name="additional_cost"/>
-                        <field name="heating_cost"/>
-
-                        <field name="total_rent" readonly="1"/>
-
-                        <field name="deposit"/>
-
-                    </group>
+                </group>
 
 
-                    <group string="Dokument">
+                <group string="Miete" col="4">
 
-                        <field name="contract_file"
-                               filename="contract_filename"/>
+                    <field name="cold_rent"/>
 
-                    </group>
+                    <field name="additional_cost"/>
+
+                    <field name="heating_cost"/>
+
+                    <field name="total_rent" readonly="1"/>
+
+                    <field name="deposit"/>
+
+                </group>
 
 
-                    <group string="Status">
+                <group string="Dokument" col="4">
 
-                        <field name="state"/>
+                    <field name="contract_file"
+                           filename="contract_filename"/>
 
-                    </group>
-
-
-                </sheet>
+                </group>
 
             </form>
 
@@ -80,7 +71,6 @@
 
                 <field name="name"/>
 
-                <!-- ONLY CHANGE HERE -->
                 <field name="tenant_ids"
                        widget="many2many_tags"/>
 
@@ -116,14 +106,9 @@
 
     <menuitem
         id="menu_leases"
-
         name="Mietverträge"
-
         parent="menu_property_root"
-
         action="action_leases"
-
         sequence="3"/>
-
 
 </odoo>

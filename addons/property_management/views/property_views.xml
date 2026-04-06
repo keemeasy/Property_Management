@@ -34,6 +34,68 @@
 
                     <page string="Einheiten">
 
+
+                        <!-- ================================= -->
+                        <!-- BULK UNIT CREATION TOOL           -->
+                        <!-- allows fast creation of units     -->
+                        <!-- ================================= -->
+
+                        <group string="Einheiten schnell erstellen" col="4">
+
+                            <group>
+
+                                <!-- how many units to create -->
+                                <field name="bulk_unit_count"/>
+
+                                <!-- starting number -->
+                                <field name="bulk_start_number"/>
+
+                                <!-- create empty rows -->
+                                <button
+                                    name="action_generate_empty_units"
+                                    string="Leere Einheiten erstellen"
+                                    type="object"
+                                    class="btn-secondary"/>
+
+                            </group>
+
+
+                            <group>
+
+                                <!-- optional default values -->
+
+                                <field name="bulk_default_size"/>
+
+                                <field name="bulk_default_rooms"/>
+
+                                <field name="bulk_default_bathrooms"/>
+
+                                <field name="bulk_default_floor"/>
+
+                            </group>
+
+
+                            <group>
+
+                                <field name="bulk_default_balcony"/>
+
+                                <field name="bulk_default_cellar"/>
+
+                                <!-- create units already filled -->
+                                <button
+                                    name="action_generate_prefilled_units"
+                                    string="Einheiten mit Werten erstellen"
+                                    type="object"
+                                    class="btn-primary"/>
+
+                            </group>
+
+                        </group>
+
+
+
+                        <!-- EXISTING TABLE (unchanged) -->
+
                         <field name="unit_ids">
 
                             <tree editable="bottom">

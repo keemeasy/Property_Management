@@ -7,10 +7,15 @@ class PropertyLease(models.Model):
     _rec_name = 'name'
 
 
+    # -----------------------------------------
+    # BASIC CONTRACT INFORMATION
+    # -----------------------------------------
+
     name = fields.Char(
         string="Vertragsnummer",
         required=True
     )
+
 
     tenant_ids = fields.Many2many(
         'res.partner',
@@ -18,12 +23,17 @@ class PropertyLease(models.Model):
         required=True
     )
 
+
+    # connection to the apartment (Wohnung)
     unit_id = fields.Many2one(
         'property.unit',
         string="Wohnung",
         required=True
     )
 
+
+    # automatically pulls the building from the selected unit
+    # ensures lease always belongs to correct building
     property_id = fields.Many2one(
         'property.property',
         string="Gebäude",
@@ -37,9 +47,11 @@ class PropertyLease(models.Model):
         required=True
     )
 
+
     end_date = fields.Date(
         string="Mietende"
     )
+
 
     contract_type = fields.Selection(
         [
@@ -52,18 +64,28 @@ class PropertyLease(models.Model):
     )
 
 
+    # -----------------------------------------
+    # RENT VALUES
+    # -----------------------------------------
+
     cold_rent = fields.Float(
         string="Kaltmiete"
     )
+
 
     additional_cost = fields.Float(
         string="Nebenkosten"
     )
 
+
     heating_cost = fields.Float(
         string="Heizkosten"
     )
 
+
+    # Warmmiete is automatically calculated
+    # formula:
+    # Warmmiete = Kaltmiete + Nebenkosten + Heizkosten
     total_rent = fields.Float(
         string="Warmmiete",
         compute="_compute_total_rent",
@@ -76,14 +98,23 @@ class PropertyLease(models.Model):
     )
 
 
+    # -----------------------------------------
+    # CONTRACT DOCUMENT
+    # -----------------------------------------
+
     contract_file = fields.Binary(
         string="Vertrag PDF"
     )
+
 
     contract_filename = fields.Char(
         string="Dateiname"
     )
 
+
+    # -----------------------------------------
+    # CONTRACT STATUS
+    # -----------------------------------------
 
     state = fields.Selection(
         [
@@ -95,6 +126,59 @@ class PropertyLease(models.Model):
         string="Status"
     )
 
+
+    # -----------------------------------------
+    # UNIT INFORMATION (Wohnungsdetails)
+    # these fields automatically show data
+    # from property.unit
+    # no duplicated data stored in lease
+    # -----------------------------------------
+
+    unit_size = fields.Float(
+        related="unit_id.size",
+        string="Wohnfläche (m²)",
+        readonly=True
+    )
+
+
+    unit_rooms = fields.Float(
+        related="unit_id.rooms",
+        string="Zimmer",
+        readonly=True
+    )
+
+
+    unit_bathrooms = fields.Integer(
+        related="unit_id.bathrooms",
+        string="Badezimmer",
+        readonly=True
+    )
+
+
+    unit_floor = fields.Integer(
+        related="unit_id.floor",
+        string="Etage",
+        readonly=True
+    )
+
+
+    unit_balcony = fields.Boolean(
+        related="unit_id.has_balcony",
+        string="Balkon",
+        readonly=True
+    )
+
+
+    unit_cellar = fields.Boolean(
+        related="unit_id.has_cellar",
+        string="Keller",
+        readonly=True
+    )
+
+
+    # -----------------------------------------
+    # COMPUTE FUNCTIONS
+    # -----------------------------------------
 
     @api.depends('cold_rent', 'additional_cost', 'heating_cost')
     def _compute_total_rent(self):

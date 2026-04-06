@@ -27,9 +27,11 @@
                         <field name="tenant_ids"
                                widget="many2many_tags"/>
 
+                        <!-- Gebäude automatically pulled from unit -->
                         <field name="property_id"
                                readonly="1"/>
 
+                        <!-- Selected apartment -->
                         <field name="unit_id"/>
 
                     </group>
@@ -46,24 +48,70 @@
 
 
 
+                <!-- ============================= -->
+                <!-- WOHNUNGSDETAILS               -->
+                <!-- Blueprint of the apartment    -->
+                <!-- Data comes from property.unit -->
+                <!-- via related fields in lease   -->
+                <!-- No duplicated data stored     -->
+                <!-- ============================= -->
+
+                <group string="Wohnungsdetails" col="4">
+
+                    <group>
+
+                        <!-- Wohnfläche (m²) -->
+                        <!-- comes from property.unit.size -->
+                        <field name="unit_size" readonly="1"/>
+
+                        <!-- number of rooms -->
+                        <field name="unit_rooms" readonly="1"/>
+
+                        <!-- number of bathrooms -->
+                        <field name="unit_bathrooms" readonly="1"/>
+
+                    </group>
+
+                    <group>
+
+                        <!-- floor of apartment -->
+                        <field name="unit_floor" readonly="1"/>
+
+                        <!-- balcony available -->
+                        <field name="unit_balcony" readonly="1"/>
+
+                        <!-- cellar available -->
+                        <field name="unit_cellar" readonly="1"/>
+
+                    </group>
+
+                </group>
+
+
+
                 <!-- MIETE -->
                 <group string="Miete" col="4">
 
                     <group>
 
+                        <!-- cold rent -->
                         <field name="cold_rent"/>
 
+                        <!-- additional costs (Nebenkosten) -->
                         <field name="additional_cost"/>
 
+                        <!-- heating costs -->
                         <field name="heating_cost"/>
 
                     </group>
 
                     <group>
 
+                        <!-- automatically calculated warm rent -->
                         <field name="total_rent"
                                readonly="1"/>
 
+                        <!-- deposit -->
                         <field name="deposit"/>
 
                     </group>
@@ -75,6 +123,7 @@
                 <!-- DOKUMENT -->
                 <group string="Dokument">
 
+                    <!-- upload contract PDF -->
                     <field name="contract_file"
                            filename="contract_filename"/>
 
@@ -88,6 +137,7 @@
 
 
 
+    <!-- LIST VIEW -->
     <record id="view_lease_tree" model="ir.ui.view">
 
         <field name="name">property.lease.tree</field>
@@ -121,6 +171,7 @@
 
 
 
+    <!-- ACTION -->
     <record id="action_leases" model="ir.actions.act_window">
 
         <field name="name">Mietverträge</field>
@@ -131,6 +182,9 @@
 
     </record>
 
+
+
+    <!-- MENU -->
     <menuitem
         id="menu_leases"
         name="Mietverträge"
